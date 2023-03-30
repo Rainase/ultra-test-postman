@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "5ca362fc-41f8-4c2b-b1b1-3df004500db4",
+		"name": "Ultra",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3566513"
+	},
+	"item": [
+		{
+			"name": "Get all users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const initialNames = ['Mart', 'Mari', 'Priit', '', undefined]",
+							"pm.variables.set('names', initialNames)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const resp = pm.response.json();",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test('Check if response is an array', function() {",
+							"    pm.expect(resp).to.be.an(\"array\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const reqBody = JSON.parse(pm.request.body.raw);",
+							"const respBody = pm.response.json();",
+							"const requiredFields = {",
+							"  name: \"string\",",
+							"  email: \"string\",",
+							"  gender: \"string\",",
+							"  status: \"string\",",
+							"};",
+							"const genders = ['male', 'female']",
+							"const msg = \"can't be blank\";",
+							"const genderMsg = \"can't be blank, can be male of female\";",
+							"const missingFields = [];",
+							"Object.entries(requiredFields).forEach(([field, type]) => {",
+							"  if (!reqBody.hasOwnProperty(field)) {",
+							"    missingFields.push({",
+							"      field: field,",
+							"      message: field === \"gender\" ? genderMsg : msg,",
+							"    });",
+							"  } else if (typeof reqBody[field] !== type || reqBody[field] === \"\") {",
+							"    missingFields.push({",
+							"      field: field,",
+							"      message: field === \"gender\" ? genderMsg : msg,",
+							"    });",
+							"  }",
+							"});",
+							"if (missingFields.length > 0) {",
+							"  pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"  });",
+							"  pm.test(\"Test missing fields response type \", function () {",
+							"    pm.expect(respBody).that.is.an(\"array\");",
+							"  });",
+							"  pm.test(\"Test response when one or more params are empty or missing\", function () {",
+							"    pm.expect(respBody).to.eqls(missingFields);",
+							"  });",
+							"} else {",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.test(\"Status code is 201\", function () {",
+							"        pm.response.to.have.status(201);",
+							"    });",
+							"    pm.test(\"Check if the response body has the required properties with correct types and values\", function() {",
+							"        pm.expect(respBody).to.be.an(\"object\");",
+							"        pm.expect(respBody).to.have.property(\"email\").that.is.a(\"string\");",
+							"        pm.expect(respBody).to.have.property(\"id\").that.is.an(\"number\");",
+							"        pm.expect(respBody).to.have.property(\"name\").that.is.a(\"string\");",
+							"        pm.expect(respBody).to.have.property(\"gender\").that.is.oneOf([\"female\", \"male\"]);",
+							"        pm.expect(respBody).to.have.property(\"status\").that.is.a(\"string\");",
+							"    })",
+							"})",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const ns = pm.variables.get(\"names\");",
+							"const genders = [\"female\", \"male\", \"\", undefined];",
+							"const statuses = [\"inactive\", \"active\"];",
+							"if(!ns) {",
+							"    pm.variables.set(\"currentName\", 'Mart');",
+							"} else {",
+							"pm.variables.set(\"currentName\", ns.shift());",
+							"}",
+							"pm.variables.set(",
+							"  \"currentGender\",",
+							"  genders[Math.floor(Math.random() * genders.length)]",
+							");",
+							"pm.variables.set(",
+							"  \"currentStatus\",",
+							"  statuses[Math.floor(Math.random() * statuses.length)]",
+							");",
+							"if (Array.isArray(ns) && ns.length > 0) {",
+							"  postman.setNextRequest(\"Create new user\");",
+							"} else {",
+							"  postman.setNextRequest(null);",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"name\": \"{{currentName}}\",\n    \"gender\": \"{{currentGender}}\",\n    \"status\": \"{{currentStatus}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{Bearer}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

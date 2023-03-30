@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: matt-ball/newman-action@master
+      - uses: matt-ball/newman-action@v1.0.4
         with:
           apiKey: ${{ secrets.postmanApiKey }}
-          collection: postman_collection.json
-          environment: 5922408-228c7edd-fc15-4f68-9665-a35d7df6945b
+          collection: ultra-postman-collection.json.json
+          environment: 3566513-d12099f2-6418-487d-b993-c64b81ea3afe
