@@ -12,5 +12,5 @@ jobs:
       - uses: matt-ball/newman-action@v1.0.4
         with:
           apiKey: ${{ secrets.postmanApiKey }}
-          collection: ultra-postman-collection.json.json
+          collection: ultra-postman-collection.json
           environment: 3566513-d12099f2-6418-487d-b993-c64b81ea3afe
