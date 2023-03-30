@@ -11,6 +11,6 @@ jobs:
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@v1.0.4
         with:
-          apiKey: ${{ secrets.POSTMANAPIKEY }}
+          access_key: ${{ secrets.POSTMANAPIKEY }}
           collection: ultra-postman-collection.json
           environment: 3566513-5ca362fc-41f8-4c2b-b1b1-3df004500db4
