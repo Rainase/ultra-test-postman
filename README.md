@@ -16,6 +16,12 @@ Use postman runner to iterate trough each scenario.
 
 In this test i mainly focused on "negative" 'POST' requests for creating users.
 
+## Test results
+
+![Postman results](https://github.com/Rainase/ultra-test-postman/blob/main/screen-recording.gif)
+
+![Postman results](https://github.com/Rainase/ultra-test-postman/blob/main/screenshot-postman.png)
+
 ## Summary
 
 This test sets up a request to create a new user and verifies the response body to ensure that all required fields are present, have the correct data type, and are not empty or missing. The script first retrieves a list of names from the Postman environment variables and sets the current name to either the first name in the list or a default value of "Mart" if the list is empty (when not using runner). It then sets the current gender and status to random values from predefined lists.
