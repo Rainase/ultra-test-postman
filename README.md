@@ -1,6 +1,6 @@
 # Ultra.io [![Ultra.io](https://github.com/Rainase/ultra-technical-test/blob/main/ultra-logo.png)](https://ultra.io)
 
-## Postman API test ![workflow](https://github.com/Rainase/ultra-technical-test/actions/workflows/main.yml/badge.svg)
+## Postman API test
 
 ### In this project you'll find:
 
